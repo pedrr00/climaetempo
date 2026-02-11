@@ -10,13 +10,14 @@
             align-items: center; justify-content: center; 
             height: 100vh; margin: 0; overflow: hidden;
         }
-        #relogio { font-size: 18vw; font-weight: bold; margin-bottom: 5px; }
-        #data { font-size: 4vw; color: #aaa; margin-bottom: 25px; text-transform: capitalize; }
+        /* Ajuste do tamanho para caber os segundos na mesma linha */
+        #relogio { font-size: 15vw; font-weight: bold; margin-bottom: 5px; letter-spacing: -2px; }
+        #data { font-size: 3.5vw; color: #aaa; margin-bottom: 25px; text-transform: capitalize; }
         .clima { width: 90%; }
     </style>
 </head>
 <body>
-    <div id="relogio">00:00</div>
+    <div id="relogio">00:00:00</div>
     <div id="data">---</div>
 
     <div class="clima">
@@ -26,13 +27,24 @@
     <script>
         function atualizar() {
             const agora = new Date();
+            
+            // Captura horas, minutos e segundos
             const h = String(agora.getHours()).padStart(2, '0');
             const m = String(agora.getMinutes()).padStart(2, '0');
-            document.getElementById('relogio').textContent = `${h}:${m}`;
-            document.getElementById('data').textContent = agora.toLocaleDateString('pt-PT', { weekday: 'long', day: 'numeric', month: 'long' });
+            const s = String(agora.getSeconds()).padStart(2, '0'); // Adiciona os segundos
+            
+            // Exibe no formato HH:MM:SS
+            document.getElementById('relogio').textContent = `${h}:${m}:${s}`;
+            
+            // Atualiza a data
+            document.getElementById('data').textContent = agora.toLocaleDateString('pt-PT', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
         }
+
+        // Executa a cada 1 segundo (1000ms)
         setInterval(atualizar, 1000);
         atualizar();
+
+        // Script do Widget de Clima
         !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');
     </script>
 </body>
